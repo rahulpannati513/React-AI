@@ -1,69 +1,44 @@
-name: Build and deploy JAR app to Azure Web App - rahulpannati
-
+@@ -0,0 +1,46 @@
+name: Azure Static Web Apps CI/CD
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
-
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
 jobs:
-  build:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-
+    name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Java version
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v3
         with:
-          java-version: "17"
-          distribution: "microsoft"
-
-      - name: Build with Maven (skip tests)
-        run: mvn clean install -DskipTests # Skip tests during the build
-
-      - name: List contents of target directory
-        run: ls -al java-app/target/ # Check if the JAR is being generated correctly in java-app/target
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
+          submodules: true
+          lfs: false
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
         with:
-          name: java-app
-          path: "java-app/target/*.jar" # Path to JAR in java-app/target
-
-  deploy:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_SKY_0BA15C40F }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "/" # App source code path
+          api_location: "" # Api source code path - optional
+          output_location: "build" # Built app content directory - optional
+          ###### End of Repository/Build Configurations ######
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: "Production"
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write # This is required for requesting the JWT
-
+    name: Close Pull Request Job
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
         with:
-          name: java-app
-
-      - name: List downloaded files
-        run: ls -al # To confirm the artifact was downloaded correctly
-
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5519ACFF69114A2AB3060055DF9E171E }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D4740665666742338C1C8EF6A1D13BAB }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2490560585CE40CA82BB289416EC27A1 }}
-
-      - name: Set Azure Subscription
-        run: |
-          az account set --subscription ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2490560585CE40CA82BB289416EC27A1 }}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: "rahulpannati" # Ensure this is the correct Azure Web App name
-          slot-name: "Production"
-          package: "./java-app/*.jar" # Adjusted path to where the .jar will be downloaded
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_SKY_0BA15C40F }}
+          action: "close"
