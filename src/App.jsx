@@ -24,9 +24,12 @@ function App() {
 
     try {
       // Send request to backend to get AI response
-      const response = await axios.get("/api/v1/chat", {
-        params: { message: userInput },
-      });
+      const response = await axios.get(
+        "http://last-spring-ai-env.eba-mnr3mumu.eu-north-1.elasticbeanstalk.com/api/v1/chat",
+        {
+          params: { message: userInput },
+        }
+      );
 
       console.log(response.data);
       setAiResponse(response.data.generation); // Set AI response
