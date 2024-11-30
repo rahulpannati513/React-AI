@@ -95,12 +95,20 @@ const ImageUploader = () => {
   }, []);
 
   return (
+<<<<<<< HEAD
     <div className="relative bg-gradient-to-r from-gray-800 via-gray-900 to-gray-900 text-white min-h-screen flex justify-center items-center">
+=======
+    <div className="relative bg-gray-100 text-black min-h-screen flex justify-center items-center">
+>>>>>>> 7727c96 (Generative Ai)
       {/* Guidelines Section - Positioned at top left */}
       {showGuidelines && (
         <div
           ref={guidelinesRef}
+<<<<<<< HEAD
           className="absolute top-0 left-0 m-4 bg-gray-800 text-white p-4 rounded-lg shadow-lg w-[300px] z-50"
+=======
+          className="absolute top-0 left-0 m-4 bg-white text-black p-4 rounded-lg shadow-lg w-[300px] z-50"
+>>>>>>> 7727c96 (Generative Ai)
         >
           <h3 className="text-2xl font-semibold">Guidelines</h3>
           <ul className="list-disc pl-6 text-lg mt-4">
@@ -123,13 +131,18 @@ const ImageUploader = () => {
       {/* Toggle Button for Guidelines */}
       <button
         onClick={() => setShowGuidelines(!showGuidelines)}
+<<<<<<< HEAD
         className="absolute top-6 left-6 text-lg text-indigo-400 hover:text-indigo-600"
+=======
+        className="absolute top-6 left-6 text-lg text-indigo-500 hover:text-indigo-600"
+>>>>>>> 7727c96 (Generative Ai)
       >
         {showGuidelines ? "Hide Guidelines" : "View Guidelines"}
       </button>
 
       <div className="flex flex-col lg:flex-row w-full max-w-7xl px-4 sm:px-6 md:px-8 py-8 space-y-6 lg:space-y-0 lg:space-x-8">
         {/* Left Side - Input Form */}
+<<<<<<< HEAD
         <div className="flex flex-col w-full lg:w-2/5 bg-gray-800 bg-opacity-80 p-6 rounded-xl shadow-lg">
           <h1 className="text-3xl sm:text-4xl font-bold text-center mb-6 sm:mb-8">
             AI-Driven Image Generation
@@ -139,6 +152,17 @@ const ImageUploader = () => {
           </p>
           <textarea
             className="w-full p-4 text-xl text-gray-900 border-none rounded-lg shadow-xl bg-gray-700 bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-6"
+=======
+        <div className="flex flex-col w-full lg:w-2/5 bg-white bg-opacity-80 p-6 rounded-xl shadow-lg">
+          <h1 className="text-3xl sm:text-4xl font-bold text-center mb-6 sm:mb-8 text-black">
+            AI-Driven Image Generation
+          </h1>
+          <p className="text-lg sm:text-xl text-center mb-6 sm:mb-8 text-black">
+            Transform your text descriptions into stunning visuals in seconds.
+          </p>
+          <textarea
+            className="w-full p-4 text-xl text-black border-none rounded-lg shadow-xl bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-6"
+>>>>>>> 7727c96 (Generative Ai)
             placeholder="Describe the image you want to generate..."
             value={message}
             onChange={handleInputChange}
@@ -160,17 +184,32 @@ const ImageUploader = () => {
         </div>
 
         {/* Right Side - Image Display */}
+<<<<<<< HEAD
         <div className="flex flex-col w-full lg:w-3/5 bg-gray-800 bg-opacity-80 p-6 rounded-xl shadow-lg">
           <h3 className="text-2xl text-center mb-6">Your Generated Image</h3>
           {loading && (
             <div className="flex justify-center items-center h-full w-full bg-gray-700 rounded-lg shadow-xl p-6">
               <div className="animate-spin rounded-full border-4 border-t-4 border-gray-400 w-16 h-16 mb-4"></div>
               <p className="text-white text-lg">Generating...</p>
+=======
+        <div className="flex flex-col w-full lg:w-3/5 bg-white bg-opacity-80 p-6 rounded-xl shadow-lg">
+          <h3 className="text-2xl text-center mb-6 text-black">
+            Your Generated Image
+          </h3>
+          {loading && (
+            <div className="flex justify-center items-center h-full w-full bg-white rounded-lg shadow-xl p-6">
+              <div className="animate-spin rounded-full border-4 border-t-4 border-gray-400 w-16 h-16 mb-4"></div>
+              <p className="text-black text-lg">Generating...</p>
+>>>>>>> 7727c96 (Generative Ai)
             </div>
           )}
 
           {imageUrl && !loading && (
+<<<<<<< HEAD
             <div className="mt-6 w-full bg-gray-700 bg-opacity-60 p-6 rounded-lg shadow-lg overflow-hidden">
+=======
+            <div className="mt-6 w-full bg-white p-6 rounded-lg shadow-lg overflow-hidden">
+>>>>>>> 7727c96 (Generative Ai)
               <img
                 src={imageUrl}
                 alt="Generated"

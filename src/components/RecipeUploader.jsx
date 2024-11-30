@@ -28,7 +28,10 @@ const RecipeUploader = () => {
       });
 
       console.log(response.data);
+<<<<<<< HEAD
       // Assuming the API returns plain text recipe
+=======
+>>>>>>> 7727c96 (Generative Ai)
       setRecipe(response.data); // Set the recipe data received from the API
       setLoading(false);
     } catch (err) {
@@ -81,10 +84,17 @@ const RecipeUploader = () => {
     : [];
 
   return (
+<<<<<<< HEAD
     <div className="bg-[#1A1A1A] min-h-screen flex flex-col items-center justify-start p-6">
       {/* Form Section */}
       <div className="max-w-xl w-full p-8 bg-[#2C2F36] rounded-xl shadow-lg mb-8">
         <h1 className="text-3xl font-semibold text-center text-white mb-6">
+=======
+    <div className="bg-white min-h-screen flex flex-col items-center justify-start p-8">
+      {/* Form Section */}
+      <div className="max-w-3xl w-full p-8 bg-white rounded-xl shadow-md mb-12">
+        <h1 className="text-4xl font-semibold text-center text-blue-800 mb-8">
+>>>>>>> 7727c96 (Generative Ai)
           Recipe Generator
         </h1>
 
@@ -93,7 +103,11 @@ const RecipeUploader = () => {
           <div>
             <label
               htmlFor="cuisine"
+<<<<<<< HEAD
               className="block text-lg font-medium text-[#B0B0B0]"
+=======
+              className="block text-lg font-semibold text-blue-700"
+>>>>>>> 7727c96 (Generative Ai)
             >
               Cuisine Type
             </label>
@@ -102,9 +116,14 @@ const RecipeUploader = () => {
               type="text"
               value={cuisine}
               onChange={(e) => setCuisine(e.target.value)}
+<<<<<<< HEAD
               className="w-full mt-1 px-4 py-3 border border-[#444444] rounded-lg bg-[#3C3F47] text-white placeholder-[#B0B0B0] focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="e.g. Italian, Indian"
               aria-label="Cuisine Type"
+=======
+              className="w-full mt-2 px-4 py-3 border border-gray-300 rounded-lg text-blue-900 placeholder-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              placeholder="e.g. Italian, Indian"
+>>>>>>> 7727c96 (Generative Ai)
             />
           </div>
 
@@ -112,7 +131,11 @@ const RecipeUploader = () => {
           <div>
             <label
               htmlFor="ingredients"
+<<<<<<< HEAD
               className="block text-lg font-medium text-[#B0B0B0]"
+=======
+              className="block text-lg font-semibold text-blue-700"
+>>>>>>> 7727c96 (Generative Ai)
             >
               Ingredients
             </label>
@@ -121,9 +144,14 @@ const RecipeUploader = () => {
               type="text"
               value={ingredients}
               onChange={(e) => setIngredients(e.target.value)}
+<<<<<<< HEAD
               className="w-full mt-1 px-4 py-3 border border-[#444444] rounded-lg bg-[#3C3F47] text-white placeholder-[#B0B0B0] focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="e.g. chicken, garlic, ginger"
               aria-label="Ingredients"
+=======
+              className="w-full mt-2 px-4 py-3 border border-gray-300 rounded-lg text-blue-900 placeholder-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              placeholder="e.g. chicken, garlic, ginger"
+>>>>>>> 7727c96 (Generative Ai)
             />
           </div>
 
@@ -131,7 +159,11 @@ const RecipeUploader = () => {
           <div>
             <label
               htmlFor="dietaryRestrictions"
+<<<<<<< HEAD
               className="block text-lg font-medium text-[#B0B0B0]"
+=======
+              className="block text-lg font-semibold text-blue-700"
+>>>>>>> 7727c96 (Generative Ai)
             >
               Dietary Restrictions
             </label>
@@ -140,16 +172,25 @@ const RecipeUploader = () => {
               type="text"
               value={dietaryRestrictions}
               onChange={(e) => setDietaryRestrictions(e.target.value)}
+<<<<<<< HEAD
               className="w-full mt-1 px-4 py-3 border border-[#444444] rounded-lg bg-[#3C3F47] text-white placeholder-[#B0B0B0] focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="e.g. vegetarian, gluten-free"
               aria-label="Dietary Restrictions"
+=======
+              className="w-full mt-2 px-4 py-3 border border-gray-300 rounded-lg text-blue-900 placeholder-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              placeholder="e.g. vegetarian, gluten-free"
+>>>>>>> 7727c96 (Generative Ai)
             />
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
+<<<<<<< HEAD
             className="w-full py-3 bg-blue-600 text-white rounded-lg mt-6 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+=======
+            className="w-full py-3 text-xl font-semibold bg-blue-500 text-white rounded-lg mt-6 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+>>>>>>> 7727c96 (Generative Ai)
             disabled={loading} // Disable button while loading
           >
             {loading ? "Fetching Recipe..." : "Get Recipe"}
@@ -157,24 +198,44 @@ const RecipeUploader = () => {
         </form>
 
         {/* Error Handling */}
+<<<<<<< HEAD
         {error && <p className="text-red-600 text-center mt-4">{error}</p>}
+=======
+        {error && (
+          <p className="text-red-500 font-medium text-center mt-4">{error}</p>
+        )}
+>>>>>>> 7727c96 (Generative Ai)
       </div>
 
       {/* Recipe Content Section */}
       {recipe && (
+<<<<<<< HEAD
         <div className="max-w-xl w-full p-8 bg-[#2C2F36] rounded-xl shadow-lg">
           {/* Title Section */}
           {title && (
             <h2 className="text-2xl font-semibold text-white mb-4">{title}</h2>
+=======
+        <div className="max-w-3xl w-full p-8 bg-white rounded-xl shadow-md">
+          {/* Title Section */}
+          {title && (
+            <h2 className="text-3xl font-bold text-blue-800 mb-6">{title}</h2>
+>>>>>>> 7727c96 (Generative Ai)
           )}
 
           {/* Ingredients Section */}
           {ingredientsList.length > 0 && (
             <>
+<<<<<<< HEAD
               <h3 className="font-semibold text-xl text-white mb-3">
                 Ingredients:
               </h3>
               <ul className="list-disc pl-5 text-[#B0B0B0]">
+=======
+              <h3 className="font-semibold text-xl text-blue-700 mb-4">
+                Ingredients:
+              </h3>
+              <ul className="list-disc pl-5 text-gray-700 space-y-2">
+>>>>>>> 7727c96 (Generative Ai)
                 {ingredientsList.map((ingredient, index) => (
                   <li key={index}>{ingredient}</li>
                 ))}
@@ -185,10 +246,17 @@ const RecipeUploader = () => {
           {/* Cooking Instructions Section */}
           {cookingSteps.length > 0 && (
             <>
+<<<<<<< HEAD
               <h3 className="font-semibold text-xl text-white mt-6 mb-3">
                 Cooking Instructions:
               </h3>
               <ol className="list-decimal pl-5 text-[#B0B0B0]">
+=======
+              <h3 className="font-semibold text-xl text-blue-700 mt-6 mb-4">
+                Cooking Instructions:
+              </h3>
+              <ol className="list-decimal pl-5 text-gray-700 space-y-2">
+>>>>>>> 7727c96 (Generative Ai)
                 {cookingSteps.map((step, index) => (
                   <li key={index}>{step}</li>
                 ))}
