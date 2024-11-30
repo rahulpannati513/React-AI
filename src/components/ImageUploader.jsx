@@ -10,10 +10,12 @@ const ImageUploader = () => {
   const [showGuidelines, setShowGuidelines] = useState(false);
   const guidelinesRef = useRef(null);
 
+  // Handle changes in the message input
   const handleInputChange = (e) => {
     setMessage(e.target.value);
   };
 
+  // Generate image based on user description
   const handleGenerateImage = async () => {
     if (!message.trim()) {
       setError("Please enter a description to generate an image.");
@@ -22,7 +24,7 @@ const ImageUploader = () => {
 
     setLoading(true);
     setError("");
-    setImageUrl("");
+    setImageUrl(""); // Reset image URL to hide previous images
     const apiEndpoint = "/api/v1/generate-image";
     const apiUrl = import.meta.env.VITE_API_BASE_URL + apiEndpoint;
 
@@ -31,11 +33,12 @@ const ImageUploader = () => {
         params: { message: message },
       });
 
+      // Adjust this to match the actual response structure of your API
       const generatedImageUrl = response?.data?.result?.output?.url || "";
 
       if (generatedImageUrl) {
         setImageUrl(generatedImageUrl);
-        setImageLoading(true);
+        setImageLoading(true); // Reset image loading state when new image is fetched
       } else {
         setError("Failed to generate an image. Please try again.");
       }
@@ -47,10 +50,12 @@ const ImageUploader = () => {
     }
   };
 
+  // Image load handler to hide the loading spinner once the image is loaded
   const handleImageLoad = () => {
     setImageLoading(false);
   };
 
+  // Download the generated image
   const downloadImage = async (e) => {
     e.preventDefault();
     const imageUrl = e.target.href;
@@ -72,56 +77,68 @@ const ImageUploader = () => {
     }
   };
 
+  // Close the guidelines if clicked outside the guidelines box
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         guidelinesRef.current &&
         !guidelinesRef.current.contains(event.target)
       ) {
-        setShowGuidelines(false);
+        setShowGuidelines(false); // Close guidelines if clicked outside
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside); // Cleanup the event listener
     };
   }, []);
 
   return (
-    <div className="relative bg-white min-h-screen flex justify-center items-center text-gray-800">
+    <div className="relative bg-white text-black min-h-screen flex justify-center items-center">
+      {/* Guidelines Section - Positioned at top left */}
       {showGuidelines && (
         <div
           ref={guidelinesRef}
-          className="absolute top-0 left-0 m-6 bg-white text-black p-6 rounded-lg shadow-xl max-w-sm w-full z-50"
+          className="absolute top-0 left-0 m-4 bg-white text-black p-6 rounded-lg shadow-lg w-[300px] z-50 animate__animated animate__fadeIn"
         >
           <h3 className="text-2xl font-semibold">Guidelines</h3>
-          <ul className="list-disc pl-6 mt-4 text-lg">
-            <li>Provide clear, concise descriptions for better results.</li>
-            <li>Avoid harmful or offensive content.</li>
-            <li>Be creative with your descriptions.</li>
+          <ul className="list-disc pl-6 text-lg mt-4">
+            <li>
+              Provide clear, concise descriptions for accurate image generation.
+            </li>
+            <li>Avoid describing harmful or offensive content.</li>
+            <li>Use creative words to generate unique images.</li>
+            <li>
+              Keep your descriptions under 150 words for best performance.
+            </li>
+            <li>
+              Images generated may not always match your expectations, but be
+              creative!
+            </li>
           </ul>
         </div>
       )}
 
+      {/* Toggle Button for Guidelines */}
       <button
         onClick={() => setShowGuidelines(!showGuidelines)}
-        className="absolute top-6 left-6 text-lg text-gray-800 hover:text-indigo-500"
+        className="absolute top-6 left-6 text-lg text-indigo-500 hover:text-indigo-600"
       >
         {showGuidelines ? "Hide Guidelines" : "View Guidelines"}
       </button>
 
-      <div className="flex flex-col lg:flex-row w-full max-w-7xl px-6 py-12 space-y-6 lg:space-y-0 lg:space-x-8">
-        {/* Left Section */}
-        <div className="w-full lg:w-2/5 bg-white p-8 rounded-lg shadow-lg space-y-6">
-          <h1 className="text-3xl sm:text-4xl font-bold text-center text-gray-800">
+      <div className="flex flex-col lg:flex-row w-full max-w-7xl px-4 sm:px-6 md:px-8 py-8 space-y-6 lg:space-y-0 lg:space-x-8">
+        {/* Left Side - Input Form */}
+        <div className="flex flex-col w-full lg:w-2/5 bg-white bg-opacity-90 p-6 rounded-xl shadow-lg">
+          <h1 className="text-3xl sm:text-4xl font-bold text-center mb-6 sm:mb-8 text-black animate__animated animate__fadeIn">
             AI-Driven Image Generation
           </h1>
-          <p className="text-lg sm:text-xl text-center text-gray-600">
-            Turn your text descriptions into stunning visuals in seconds.
+          <p className="text-lg sm:text-xl text-center mb-6 sm:mb-8 text-black animate__animated animate__fadeIn">
+            Transform your text descriptions into stunning visuals in seconds.
           </p>
           <textarea
-            className="w-full p-4 text-xl text-black border-none rounded-lg shadow-md bg-gray-100 focus:ring-2 focus:ring-indigo-500 transition-all"
+            className="w-full p-4 text-xl text-black border-none rounded-lg shadow-xl bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-6"
             placeholder="Describe the image you want to generate..."
             value={message}
             onChange={handleInputChange}
@@ -129,11 +146,12 @@ const ImageUploader = () => {
           ></textarea>
           <button
             onClick={handleGenerateImage}
-            className="w-full sm:w-auto text-xl bg-indigo-600 hover:bg-indigo-700 text-white py-4 px-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-            disabled={loading}
+            className="w-full sm:w-auto text-xl bg-indigo-600 hover:bg-indigo-700 text-white py-4 px-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105"
+            disabled={loading} // Disable button while loading
           >
             {loading ? "Generating..." : "Generate Image"}
           </button>
+
           {error && (
             <div className="mt-4 text-red-600 font-semibold bg-red-100 p-4 rounded-lg shadow-lg">
               <p>{error}</p>
@@ -141,28 +159,28 @@ const ImageUploader = () => {
           )}
         </div>
 
-        {/* Right Section */}
-        <div className="w-full lg:w-3/5 p-8 bg-white rounded-lg shadow-lg space-y-6">
-          <h3 className="text-2xl text-center text-gray-800">
+        {/* Right Side - Image Display */}
+        {/* Right Side - Image Display */}
+        <div className="flex flex-col w-full lg:w-3/5 bg-white p-6 rounded-xl shadow-lg">
+          <h3 className="text-2xl text-center mb-6 text-black">
             Your Generated Image
           </h3>
           {loading && (
-            <div className="flex justify-center items-center w-full h-64 bg-gray-100 rounded-lg shadow-lg">
+            <div className="flex justify-center items-center h-full w-full bg-gray-100 rounded-lg shadow-xl p-6">
               <div className="animate-spin rounded-full border-4 border-t-4 border-gray-400 w-16 h-16 mb-4"></div>
-              <p className="text-gray-600">Generating...</p>
+              <p className="text-black text-lg">Generating...</p>
             </div>
           )}
 
           {imageUrl && !loading && (
-            <div className="w-full bg-gray-100 p-6 rounded-lg shadow-lg overflow-hidden">
+            <div className="mt-6 w-full bg-gray-100 p-6 rounded-lg shadow-lg overflow-hidden">
               <img
                 src={imageUrl}
                 alt="Generated"
                 onLoad={handleImageLoad}
-                loading="lazy"
-                className={`w-full max-h-[400px] object-cover rounded-lg shadow-xl transition-opacity duration-500 ${
+                className={`w-full max-h-[400px] object-cover rounded-lg shadow-xl ${
                   imageLoading ? "opacity-0" : "opacity-100"
-                }`}
+                } transition-opacity duration-500`}
               />
               <a
                 href={imageUrl}
