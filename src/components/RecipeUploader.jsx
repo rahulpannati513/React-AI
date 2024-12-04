@@ -4,7 +4,7 @@ function RecipeUploader() {
   const [ingredients, setIngredients] = useState("");
   const [cuisine, setCuisine] = useState("any");
   const [dietaryRestrictions, setDietaryRestrictions] = useState("");
-  const [recipe, setRecipe] = useState("");
+  const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -28,8 +28,8 @@ function RecipeUploader() {
         throw new Error("Failed to fetch the recipe.");
       }
 
-      const data = await response.text();
-      setRecipe(data);
+      const data = await response.json(); // assuming response is JSON
+      setRecipe(data); // Store the recipe data (assuming it's an object with a title, ingredients, instructions)
     } catch (error) {
       setError(error.message);
     } finally {
@@ -38,7 +38,7 @@ function RecipeUploader() {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-4 bg-white rounded-lg shadow-lg">
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold text-center mb-6">Create a Recipe</h2>
 
       {/* Ingredients Input */}
@@ -117,9 +117,33 @@ function RecipeUploader() {
           <h3 className="text-xl font-semibold text-center mb-4">
             Generated Recipe
           </h3>
-          <pre className="bg-gray-100 p-4 rounded-md border border-gray-300">
-            {recipe}
-          </pre>
+
+          <div className="bg-gray-100 p-4 rounded-md border border-gray-300 mb-4">
+            <h4 className="text-lg font-semibold">Title:</h4>
+            <p className="text-md">{recipe.title}</p>
+          </div>
+
+          <div className="bg-gray-100 p-4 rounded-md border border-gray-300 mb-4">
+            <h4 className="text-lg font-semibold">Ingredients:</h4>
+            <ul className="list-disc pl-5">
+              {recipe.ingredients.map((ingredient, index) => (
+                <li key={index} className="text-md">
+                  {ingredient}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="bg-gray-100 p-4 rounded-md border border-gray-300">
+            <h4 className="text-lg font-semibold">Instructions:</h4>
+            <ol className="list-decimal pl-5">
+              {recipe.instructions.map((step, index) => (
+                <li key={index} className="text-md">
+                  {step}
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       )}
     </div>
