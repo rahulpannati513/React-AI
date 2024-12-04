@@ -20,8 +20,7 @@ const RecipeUploader = () => {
 
     try {
       const apiEndpoint = "/api/v1/get-recipe"; // Adjust with your actual API endpoint
-      const apiUrl =
-        "https://generative-ai-app.azurewebsites.net/api/v1/get-recipe"; // Adjust with your actual API URL
+      const apiUrl = import.meta.env.VITE_API_BASE_URL + apiEndpoint; // Adjust with your actual API URL
 
       // Passing dynamic user input data in the request params
       const response = await axios.get(apiUrl, {
@@ -121,38 +120,40 @@ const RecipeUploader = () => {
         {/* Error Message */}
         {error && <p className="text-red-600 text-center mt-4">{error}</p>}
       </div>
-      <div className="mt-6 p-6 bg-white rounded-lg shadow-lg max-w-4xl mx-auto">
-        <h1 className="text-3xl font-extrabold text-gray-800 mb-4">Title</h1>
+      {recipe && (
+        <div className="mt-6 p-6 bg-white rounded-lg shadow-lg max-w-4xl mx-auto">
+          <h1 className="text-3xl font-extrabold text-gray-800 mb-4">Title</h1>
 
-        {/* Display the recipe title */}
-        <h1 className="text-3xl font-extrabold text-gray-800 mb-4">
-          {recipe?.title || recipe?.Title || "Untitled Recipe"}
-        </h1>
+          {/* Display the recipe title */}
+          <h1 className="text-3xl font-extrabold text-gray-800 mb-4">
+            {recipe?.title || recipe?.Title || "Untitled Recipe"}
+          </h1>
 
-        {/* Display Ingredients */}
-        <h2 className="text-2xl font-semibold text-gray-700 mb-3">
-          Ingredients
-        </h2>
-        <ul className="text-gray-600 mb-6">
-          {(recipe?.ingredients || recipe?.Ingredients || []).map(
-            (ingredient, index) => (
-              <li key={index}>{ingredient}</li>
-            )
-          )}
-        </ul>
+          {/* Display Ingredients */}
+          <h2 className="text-2xl font-semibold text-gray-700 mb-3">
+            Ingredients
+          </h2>
+          <ul className="text-gray-600 mb-6">
+            {(recipe?.ingredients || recipe?.Ingredients || []).map(
+              (ingredient, index) => (
+                <li key={index}>{ingredient}</li>
+              )
+            )}
+          </ul>
 
-        {/* Display Instructions */}
-        <h2 className="text-2xl font-semibold text-gray-700 mb-3">
-          Instructions
-        </h2>
-        <ul className="text-gray-600 mb-6">
-          {(recipe?.instructions || recipe?.Instructions || []).map(
-            (instruction, index) => (
-              <li key={index}>{instruction}</li>
-            )
-          )}
-        </ul>
-      </div>
+          {/* Display Instructions */}
+          <h2 className="text-2xl font-semibold text-gray-700 mb-3">
+            Instructions
+          </h2>
+          <ul className="text-gray-600 mb-6">
+            {(recipe?.instructions || recipe?.Instructions || []).map(
+              (instruction, index) => (
+                <li key={index}>{instruction}</li>
+              )
+            )}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
