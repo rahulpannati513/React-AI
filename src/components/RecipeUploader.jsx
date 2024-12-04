@@ -116,6 +116,46 @@ const RecipeUploader = () => {
         {/* Error Message */}
         {error && <p className="text-red-600 text-center mt-4">{error}</p>}
       </div>
+      <div className="max-w-xl w-full p-8 bg-white rounded-xl shadow-lg">
+        {/* Title Section */}
+        {recipe?.title && (
+          <h2 className="text-2xl font-semibold text-black mb-4">
+            {recipe.title}
+          </h2>
+        )}
+
+        {/* Ingredients Section */}
+        {recipe?.ingredients && recipe?.ingredients?.length > 0 && (
+          <>
+            <h3 className="font-semibold text-xl text-black mb-3">
+              Ingredients:
+            </h3>
+            <ul className="list-disc pl-5">
+              {recipe?.ingredients.map((ingredient, index) => (
+                <li key={index} className="text-gray-700">
+                  {ingredient?.item} - {ingredient?.quantity}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        {/* Instructions Section */}
+        {recipe?.instructions && recipe.instructions?.length > 0 && (
+          <>
+            <h3 className="font-semibold text-xl text-black mt-6 mb-3">
+              Cooking Instructions:
+            </h3>
+            <ol className="list-decimal pl-5">
+              {recipe.instructions.map((step, index) => (
+                <li key={index} className="text-gray-700">
+                  {step?.step}. {step?.details}
+                </li>
+              ))}
+            </ol>
+          </>
+        )}
+      </div>
     </div>
   );
 };
