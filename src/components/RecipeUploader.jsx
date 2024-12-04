@@ -116,7 +116,7 @@ const RecipeUploader = () => {
         {/* Error Message */}
         {error && <p className="text-red-600 text-center mt-4">{error}</p>}
       </div>
-      <di>{recipe.data}</di>
+      <div>{recipe.data}</div>
     </div>
   );
 };
