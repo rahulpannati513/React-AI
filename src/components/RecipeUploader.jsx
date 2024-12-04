@@ -30,20 +30,20 @@ const RecipeUploader = () => {
     }
   };
 
-  // Format ingredients (if ingredients are objects with quantity, name, and type)
+  // Format ingredients (if ingredients are objects with amount, item)
   const formatIngredients = (ingredients) => {
     return ingredients.map((ingredient, index) => (
       <li key={index} className="text-gray-700">
-        {ingredient.quantity} {ingredient.name} ({ingredient.type})
+        {ingredient.amount} {ingredient.item}
       </li>
     ));
   };
 
-  // Format instructions
+  // Format instructions (if instructions are objects with step, detail)
   const formatInstructions = (instructions) => {
-    return instructions.map((step, index) => (
+    return instructions.map((instruction, index) => (
       <li key={index} className="text-gray-700">
-        {step}
+        Step {instruction.step}: {instruction.detail}
       </li>
     ));
   };
@@ -130,7 +130,7 @@ const RecipeUploader = () => {
         <div className="max-w-xl w-full p-8 bg-white rounded-xl shadow-lg">
           {/* Title Section */}
           <h2 className="text-2xl font-semibold text-black mb-4">
-            {recipe?.title}
+            {recipe?.title || "Recipe Title"}
           </h2>
 
           {/* Ingredients Section */}
