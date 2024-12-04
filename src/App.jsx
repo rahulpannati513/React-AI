@@ -1,192 +1,150 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
 
-function App() {
-  const [userInput, setUserInput] = useState("");
-  const [aiResponse, setAiResponse] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+function RecipeUploader() {
+  const [ingredients, setIngredients] = useState("");
+  const [cuisine, setCuisine] = useState("any");
+  const [dietaryRestrictions, setDietaryRestrictions] = useState("");
+  const [recipe, setRecipe] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Handle the input change in the text area
-  const handleInputChange = (e) => {
-    setUserInput(e.target.value);
-  };
+  const apiEndpoint = "/api/v1/get-recipe"; // Ensure this matches your actual API endpoint
+  const apiUrl = `${import.meta.env.VITE_API_BASE_URL}${apiEndpoint}`;
 
-  // Handle the AI response request when the button is clicked
-  const handleResponse = async () => {
-    if (!userInput.trim()) {
-      setAiResponse("Please enter a description or a question.");
+  const createRecipe = async () => {
+    if (!ingredients) {
+      setError("Ingredients are required.");
       return;
     }
 
-    setIsLoading(true);
-    setAiResponse(""); // Clear previous response
-
+    setLoading(true);
+    setError(null);
     try {
-      // Construct the full API URL using environment variable and endpoint
-      const apiEndpoint = "/api/v1/chat"; // This can be changed for different endpoints like /get-recipe
-      const apiUrl = import.meta.env.VITE_API_BASE_URL + apiEndpoint;
-
-      const response = await axios.get(apiUrl, {
-        params: { message: userInput }, // Send the user input to the API
-      });
-
-      console.log(response.data);
-      setAiResponse(response.data.generation); // Set AI response
-      setIsLoading(false); // Set loading to false
-    } catch (error) {
-      console.error("Error fetching AI response", error);
-      setAiResponse("Error generating response. Please try again.");
-      setIsLoading(false); // Set loading to false
-    }
-  };
-
-  // Function to split the AI response and detect code block
-  const renderResponse = (response) => {
-    const regex = /```([\s\S]*?)```/g;
-    const parts = [];
-    let lastIndex = 0;
-    let match;
-
-    while ((match = regex.exec(response)) !== null) {
-      if (match.index > lastIndex) {
-        parts.push(response.slice(lastIndex, match.index));
-      }
-
-      parts.push(
-        <pre
-          key={match.index}
-          className="bg-[#1D1D1D] text-white p-4 rounded-lg overflow-x-auto shadow-md"
-        >
-          <code>{match[1]}</code>
-        </pre>
+      const response = await fetch(
+        `${apiUrl}?ingredients=${ingredients}&dietaryRestrictions=${dietaryRestrictions}&cuisine=${cuisine}`
       );
 
-      lastIndex = regex.lastIndex;
-    }
+      if (!response.ok) {
+        throw new Error("Failed to fetch the recipe.");
+      }
 
-    if (lastIndex < response.length) {
-      parts.push(response.slice(lastIndex));
+      const data = await response.json(); // assuming response is JSON
+      setRecipe(data); // Store the recipe data (assuming it's an object with a title, ingredients, instructions)
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
-
-    return <>{parts}</>; // Return wrapped parts as a fragment
   };
 
   return (
-    <div className="bg-white text-black min-h-screen">
-      {/* Main Content */}
-      <section className="py-20 px-6 lg:px-16 text-center">
-        <h2 className="text-5xl font-bold text-blue-500 mb-6 animate__animated animate__fadeIn">
-          Ask AI Anything
-        </h2>
-        <div className="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-xl animate__animated animate__fadeInUp">
-          <textarea
-            value={userInput}
-            onChange={handleInputChange}
-            placeholder="Type your question or description here..."
-            rows="6"
-            className="w-full p-4 text-lg text-gray-700 border border-[#ccc] rounded-lg mb-4 bg-[#f9f9f9] placeholder-[#B0B0B0] overflow-y-auto resize-none focus:outline-none focus:ring-2 focus:ring-[#444444]"
-            aria-label="Input field for question or description"
-          ></textarea>
-          <button
-            onClick={handleResponse}
-            className="w-full py-3 bg-blue-500 text-white text-lg rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
-            aria-live="polite" // Allow the screen reader to notify the user of updates
-          >
-            {isLoading ? (
-              <span className="animate-spin">🌀</span>
-            ) : (
-              "Get AI Response"
-            )}
-          </button>
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold text-center mb-6">Create a Recipe</h2>
+      {/* Ingredients Input */}
+      <div className="mb-4">
+        <label
+          className="block text-sm font-medium text-gray-700"
+          htmlFor="ingredients"
+        >
+          Ingredients
+        </label>
+        <input
+          id="ingredients"
+          type="text"
+          value={ingredients}
+          onChange={(e) => setIngredients(e.target.value)}
+          placeholder="Enter ingredients (comma separated)"
+          className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
 
-          {aiResponse && !isLoading && (
-            <div className="mt-6 p-6 bg-white rounded-lg text-gray-700 opacity-90 max-h-96 overflow-y-auto shadow-xl animate__animated animate__fadeInUp">
-              {/* Render AI response */}
-              {renderResponse(aiResponse)}
-            </div>
-          )}
+      {/* Cuisine Input */}
+      <div className="mb-4">
+        <label
+          className="block text-sm font-medium text-gray-700"
+          htmlFor="cuisine"
+        >
+          Cuisine Type
+        </label>
+        <input
+          id="cuisine"
+          type="text"
+          value={cuisine}
+          onChange={(e) => setCuisine(e.target.value)}
+          placeholder="Enter cuisine type (optional)"
+          className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
+
+      {/* Dietary Restrictions Input */}
+      <div className="mb-6">
+        <label
+          className="block text-sm font-medium text-gray-700"
+          htmlFor="dietaryRestrictions"
+        >
+          Dietary Restrictions
+        </label>
+        <input
+          id="dietaryRestrictions"
+          type="text"
+          value={dietaryRestrictions}
+          onChange={(e) => setDietaryRestrictions(e.target.value)}
+          placeholder="Enter dietary restrictions (optional)"
+          className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
+
+      {/* Create Recipe Button */}
+      <div className="mb-4">
+        <button
+          onClick={createRecipe}
+          disabled={loading}
+          className={`w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-200 focus:outline-none ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+        >
+          {loading ? "Creating..." : "Create Recipe"}
+        </button>
+      </div>
+
+      {/* Error Message */}
+      {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
+      {/* Recipe Output */}
+      {recipe && !loading && (
+        <div className="mt-6">
+          <h3 className="text-xl font-semibold text-center mb-4">
+            Generated Recipe: {recipe.title}
+          </h3>
+
+          {/* Ingredients Section */}
+          <div className="bg-gray-100 p-4 rounded-md border border-gray-300 mb-4">
+            <h4 className="text-lg font-semibold">Ingredients:</h4>
+            <ul className="list-disc pl-5">
+              {recipe.ingredients.map((ingredient, index) => (
+                <li key={index} className="text-md">
+                  {ingredient.quantity} {ingredient.measurement} of{" "}
+                  {ingredient.ingredient_name}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Instructions Section */}
+          <div className="bg-gray-100 p-4 rounded-md border border-gray-300">
+            <h4 className="text-lg font-semibold">Instructions:</h4>
+            <ol className="list-decimal pl-5">
+              {recipe.instructions.map((instruction, index) => (
+                <li key={index} className="text-md">
+                  {instruction.instruction}
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
-      </section>
-
-      {/* Explore AI Models Section */}
-      <section className="py-20 bg-white text-center">
-        <h2 className="text-5xl font-bold text-blue-500 mb-12 animate__animated animate__fadeIn">
-          Explore AI Models
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 px-6">
-          {/* DALL-E 3 Preview */}
-          <Link
-            to="/image"
-            className="bg-white p-8 rounded-lg shadow-lg hover:bg-blue-50 transform hover:scale-105 hover:shadow-2xl transition-all duration-300 animate__animated animate__fadeIn"
-            aria-label="DALL-E 3 image generation model"
-          >
-            <h3 className="text-2xl font-semibold text-black mb-4 opacity-70">
-              DALL-E 3
-            </h3>
-            <img
-              src="https://images.ctfassets.net/kftzwdyauwt9/ed21faee-ce44-4d91-f5cc39941d47/bdd3983530857e93d205304e219e2d95/dall-e.jpg?w=3840&q=90&fm=webp"
-              alt="Generated by DALL-E 3"
-              className="w-full h-auto mb-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
-            />
-            <p className="text-gray-700 text-lg">
-              Generate stunning, high-quality images from any text description.
-            </p>
-          </Link>
-
-          {/* Audio-to-Text Preview */}
-          <Link
-            to="/audio"
-            className="bg-white p-8 rounded-lg shadow-lg hover:bg-blue-50 transform hover:scale-105 hover:shadow-2xl transition-all duration-300 animate__animated animate__fadeIn"
-            aria-label="Audio-to-Text AI model"
-          >
-            <h3 className="text-2xl font-semibold text-black mb-4 opacity-70">
-              Audio-to-Text
-            </h3>
-
-            {/* Video/Image Section */}
-            <div className="flex justify-center mb-4 w-full">
-              <img
-                src="https://images.ctfassets.net/kftzwdyauwt9/9c95036b-c2f5-4af8-ef2dfdd10ec8/ab4206ed7dbd28ac30f228499ca5766e/chatgpt-can-now-see-hear-and-speak-alt.jpg?w=3840&q=90&fm=webp"
-                alt="Audio-to-Text"
-                className="w-full h-auto max-w-[320px] rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
-              />
-            </div>
-
-            {/* Video Description */}
-            <p className="text-gray-700 text-lg">
-              Convert spoken language into accurate, readable text instantly.
-            </p>
-          </Link>
-
-          {/* AI-Powered Recipe Generation */}
-          <Link
-            to="/recipe"
-            className="bg-white p-8 rounded-lg shadow-lg hover:bg-blue-50 transform hover:scale-105 hover:shadow-2xl transition-all duration-300 animate__animated animate__fadeIn"
-            aria-label="AI Recipe Generator"
-          >
-            <h3 className="text-2xl font-semibold text-black mb-4 opacity-70">
-              AI Recipe Generator
-            </h3>
-            <img
-              src="https://images.ctfassets.net/kftzwdyauwt9/21GoFN3USoFH1VE6ERRD4g/b6934085e667c97956fcfde5db305a99/Search_Card.png?w=3840&q=90&fm=webp"
-              alt="Recipe Generation"
-              className="w-auto h-auto mb-4 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
-            />
-            <p className="text-gray-700 text-lg">
-              Generate personalized recipes based on ingredients and
-              preferences.
-            </p>
-          </Link>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-6 bg-white text-center text-gray-500">
-        <p>&copy; 2024 Your AI Platform. All Rights Reserved.</p>
-      </footer>
+      )}
     </div>
   );
 }
 
-export default App;
+export default RecipeUploader;
