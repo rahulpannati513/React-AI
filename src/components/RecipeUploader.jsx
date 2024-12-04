@@ -30,20 +30,20 @@ const RecipeUploader = () => {
     }
   };
 
-  // Format ingredients (if ingredients are objects with amount, item)
+  // Format ingredients (adjusted based on the correct property names)
   const formatIngredients = (ingredients) => {
     return ingredients.map((ingredient, index) => (
       <li key={index} className="text-gray-700">
-        {ingredient.amount} {ingredient.item}
+        {ingredient.quantity} {ingredient.ingredient_name}
       </li>
     ));
   };
 
-  // Format instructions (if instructions are objects with step, detail)
+  // Format instructions (adjusted based on the correct property names)
   const formatInstructions = (instructions) => {
     return instructions.map((instruction, index) => (
       <li key={index} className="text-gray-700">
-        Step {instruction.step}: {instruction.detail}
+        Step {instruction.step}: {instruction.instruction}
       </li>
     ));
   };
