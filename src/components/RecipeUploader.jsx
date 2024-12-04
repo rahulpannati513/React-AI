@@ -31,7 +31,7 @@ const RecipeUploader = () => {
         },
       });
 
-      setRecipe(response.data); // Assuming the API returns the recipe data in the `data` field
+      setRecipe(response); // Assuming the API returns the recipe data in the `data` field
       setLoading(false);
     } catch (err) {
       setError("Error fetching recipe. Please try again later.");
@@ -120,39 +120,33 @@ const RecipeUploader = () => {
       {recipe && (
         <div className="max-w-xl w-full p-8 bg-white rounded-xl shadow-lg">
           {/* Title Section */}
-          {recipe.title && (
+          {recipe?.title && (
             <h2 className="text-2xl font-semibold text-black mb-4">
-              {recipe.title}
+              {recipe?.title}
             </h2>
           )}
 
           {/* Cuisine Section */}
           {recipe.cuisine && (
             <p className="text-lg text-gray-700">
-              <strong>Cuisine:</strong> {recipe.cuisine}
+              <strong>Cuisine:</strong> {recipe?.cuisine}
             </p>
           )}
 
           {/* Diet Section */}
-          {recipe.diet && (
+          {recipe?.diet && (
             <p className="text-lg text-gray-700">
-              <strong>Diet:</strong> {recipe.diet}
+              <strong>Diet:</strong> {recipe?.diet}
             </p>
           )}
 
           {/* Ingredients Section */}
-          {recipe.ingredients && recipe.ingredients.length > 0 && (
+          {recipe?.ingredients && recipe?.ingredients?.length > 0 && (
             <>
               <h3 className="font-semibold text-xl text-black mb-3">
                 Ingredients:
               </h3>
-              <ul className="list-disc pl-5">
-                {recipe.ingredients.map((ingredient, index) => (
-                  <li key={index} className="text-gray-700">
-                    {ingredient}
-                  </li>
-                ))}
-              </ul>
+              <ul className="list-disc pl-5">{recipe.ingredients}</ul>
             </>
           )}
 
@@ -162,13 +156,7 @@ const RecipeUploader = () => {
               <h3 className="font-semibold text-xl text-black mt-6 mb-3">
                 Cooking Instructions:
               </h3>
-              <ol className="list-decimal pl-5">
-                {recipe.instructions.map((step, index) => (
-                  <li key={index} className="text-gray-700">
-                    {step}
-                  </li>
-                ))}
-              </ol>
+              <ol className="list-decimal pl-5">{recipe.instructions}</ol>
             </>
           )}
         </div>
