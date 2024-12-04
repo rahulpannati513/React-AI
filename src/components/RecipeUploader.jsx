@@ -30,8 +30,17 @@ const RecipeUploader = () => {
     }
   };
 
-  // Format ingredients (adjusted based on the correct property names)
+  // Dynamically format ingredients based on available structure
   const formatIngredients = (ingredients) => {
+    if (Array.isArray(ingredients)) {
+      return ingredients.map((ingredient, index) => (
+        <li key={index} className="text-gray-700">
+          {ingredient}
+        </li>
+      ));
+    }
+
+    // If ingredients are in an object (e.g. { ingredient_name, quantity })
     return ingredients.map((ingredient, index) => (
       <li key={index} className="text-gray-700">
         {ingredient.quantity} {ingredient.ingredient_name}
@@ -39,8 +48,17 @@ const RecipeUploader = () => {
     ));
   };
 
-  // Format instructions (adjusted based on the correct property names)
+  // Dynamically format instructions based on available structure
   const formatInstructions = (instructions) => {
+    if (Array.isArray(instructions)) {
+      return instructions.map((instruction, index) => (
+        <li key={index} className="text-gray-700">
+          {instruction}
+        </li>
+      ));
+    }
+
+    // If instructions have `step` and `instruction` properties
     return instructions.map((instruction, index) => (
       <li key={index} className="text-gray-700">
         Step {instruction.step}: {instruction.instruction}
