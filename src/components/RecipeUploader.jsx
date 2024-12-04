@@ -32,7 +32,7 @@ const RecipeUploader = () => {
       });
 
       setRecipe(response);
-      console.log(response); // Assuming the API returns the recipe data in the `data` field
+      console.log(response);
       setLoading(false);
     } catch (err) {
       setError("Error fetching recipe. Please try again later.");
@@ -116,7 +116,7 @@ const RecipeUploader = () => {
         {/* Error Message */}
         {error && <p className="text-red-600 text-center mt-4">{error}</p>}
       </div>
-      <div>{recipe.data}</div>
+      <div>{recipe?.data}</div>
     </div>
   );
 };
