@@ -9,6 +9,7 @@ import RecipeUploader from "./components/RecipeUploader.jsx";
 import AboutDeveloper from "./components/AboutDeveloper.jsx";
 import Header from "./components/Header.jsx";
 import "font-awesome/css/font-awesome.min.css";
+import "./App.css";
 
 const router = createBrowserRouter([
   {
