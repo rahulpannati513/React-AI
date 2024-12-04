@@ -31,7 +31,8 @@ const RecipeUploader = () => {
         },
       });
 
-      setRecipe(response); // Assuming the API returns the recipe data in the `data` field
+      setRecipe(response);
+      console.log(response); // Assuming the API returns the recipe data in the `data` field
       setLoading(false);
     } catch (err) {
       setError("Error fetching recipe. Please try again later.");
@@ -118,47 +119,10 @@ const RecipeUploader = () => {
 
       {/* Recipe Content Section */}
       {recipe && (
-        <div className="max-w-xl w-full p-8 bg-white rounded-xl shadow-lg">
-          {/* Title Section */}
-          {recipe?.title && (
-            <h2 className="text-2xl font-semibold text-black mb-4">
-              {recipe?.title}
-            </h2>
-          )}
-
-          {/* Cuisine Section */}
-          {recipe.cuisine && (
-            <p className="text-lg text-gray-700">
-              <strong>Cuisine:</strong> {recipe?.cuisine}
-            </p>
-          )}
-
-          {/* Diet Section */}
-          {recipe?.diet && (
-            <p className="text-lg text-gray-700">
-              <strong>Diet:</strong> {recipe?.diet}
-            </p>
-          )}
-
-          {/* Ingredients Section */}
-          {recipe?.ingredients && recipe?.ingredients?.length > 0 && (
-            <>
-              <h3 className="font-semibold text-xl text-black mb-3">
-                Ingredients:
-              </h3>
-              <ul className="list-disc pl-5">{recipe.ingredients}</ul>
-            </>
-          )}
-
-          {/* Instructions Section */}
-          {recipe.instructions && recipe.instructions.length > 0 && (
-            <>
-              <h3 className="font-semibold text-xl text-black mt-6 mb-3">
-                Cooking Instructions:
-              </h3>
-              <ol className="list-decimal pl-5">{recipe.instructions}</ol>
-            </>
-          )}
+        <div>
+          <h1>{recipe?.title}</h1>
+          <p>{recipe?.ingredients}</p>
+          <p>{recipe?.instructions}</p>
         </div>
       )}
     </div>
