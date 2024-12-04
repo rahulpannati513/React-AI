@@ -40,7 +40,6 @@ function RecipeUploader() {
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold text-center mb-6">Create a Recipe</h2>
-
       {/* Ingredients Input */}
       <div className="mb-4">
         <label
